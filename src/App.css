@@ -1,33 +1,103 @@
-.App {
-  text-align: center;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+*{box-sizing: border-box;}
+.wrap {width: 100%;max-width: 960px;margin: 0 auto;padding-left: 15px;padding-right: 15px;}
+.filter-user-holder {padding: 40px 0;}
+
+.filter-panel {padding: 20px 10px; margin-bottom: 30px;border: 2px solid #eee; border-radius: 7px;}
+.filter-panel .filter-field {margin:0 20px 10px 0;}
+.filter-panel {}
+
+.table-holder {overflow-x: auto;}
+.table-holder .table {min-width: 450px;}
+
+.pagination {padding: 10px 0; padding-left: 0; margin: 20px 0; border-radius: 4px;}
+.pagination a {cursor: pointer;}
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+/*.pagination li {display: inline;}
+.pagination li a {padding: 5px 7px; background: #eee; color: #fff;}
+*/
+/*.house-map-holder {overflow: hidden;}
+.house-map-item {padding: 10px;}
+.house-map-item .house-img-holder {position: relative;padding: 0;overflow: hidden;height: 150px;}
+  .house-map-item .house-description {transition: all ease-out 0.5s; font-family: Roboto,Arial, sans-serif; visibility: visible;opacity: 0; padding: 10px; position: absolute;left: 0;right: 0;top: 0;bottom: 0;background: rgba(0,0,0,.65);font-size: 13px;color: #ffffff;line-height: 1.35;overflow-y: auto;}
+.house-map-item:hover .house-description {visibility: visible;opacity: 1;}
+.house-map-item .house-map-img {min-height: 100%; width:100%;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);}
+.house-map-holder .house-map-item .item-content {padding: 10px 0 5px;}
+.house-map-item .address {font-size: 15px; line-height:1.2;margin-bottom: 10px;color: #000;}
+.house-map-item .price {font-size:16px;font-weight: bold;margin-bottom: 20px;}
+.house-map-item .area {font-size: 13px;margin:0; color: #000;}
+
+.secondary.house-map-item .price {margin:10px 0 0; padding: 0 10px; color: #fff;position: relative; text-shadow: 3px 2px 5px #000;}
+
+.house-map-holder .template-title {text-align: center; font-size: 22px;line-height: 1.4;padding-top: 30px}
+.template-controls {padding: 10px 0 30px;}
+.template-controls .btn-change {margin: 5px;}
+
+
+@media screen and (max-width: 960px) {
+  .house-map-item .house-img-holder {height: 200px;}
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+@media screen and (max-width: 768px) {
+  .house-map-item .house-img-holder {height: 160px;}
+}*/
