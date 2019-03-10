@@ -19,7 +19,7 @@ export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
-
+console.log(store);
 sagaMiddleware.run(authSaga);
 
 

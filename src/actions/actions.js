@@ -1,26 +1,20 @@
-export const GET_HOUSE_MAP_REQUEST = 'GET_HOUSE_MAP_REQUEST';
-export const GET_HOUSE_MAP_SUCCESS = 'GET_HOUSE_MAP_SUCCESS';
-export const GET_HOUSE_MAP_FAILURE = 'GET_HOUSE_MAP_FAILURE';
-export const CHANGE_CARD_TEMPLATE = 'CHANGE_CARD_TEMPLATE';
+export const GET_USER_LIST_REQUEST = 'GET_USER_LIST_REQUEST';
+export const GET_USER_LIST_SUCCESS = 'GET_USER_LIST_SUCCESS';
+export const GET_USER_LIST_FAILURE = 'GET_USER_LIST_FAILURE';
 export const USER_FILTER = 'USER_FILTER';
 
-export const getHouseMapRequest = payload => ({
-  type: GET_HOUSE_MAP_REQUEST,
+export const getUserListRequest = payload => ({
+  type: GET_USER_LIST_REQUEST,
   payload,
 });
 
-export const getHouseMapSuccess = payload => ({
-  type: GET_HOUSE_MAP_SUCCESS,
+export const getUserListSuccess = payload => ({
+  type: GET_USER_LIST_SUCCESS,
   payload,
 });
 
-export const getHouseMapFailure = payload => ({
-  type: GET_HOUSE_MAP_FAILURE,
-  payload,
-});
-
-export const changeCardTemplate = payload => ({
-  type: CHANGE_CARD_TEMPLATE,
+export const getUserListFailure = payload => ({
+  type: GET_USER_LIST_FAILURE,
   payload,
 });
 

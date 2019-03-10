@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-  GET_HOUSE_MAP_SUCCESS,
+  GET_USER_LIST_SUCCESS,
   CHANGE_CARD_TEMPLATE,
   USER_FILTER
 } from '../actions/actions';
@@ -13,24 +13,17 @@ const initialState = {
 function users (state = initialState, action)  {
   switch (action.type) {
 
-    case GET_HOUSE_MAP_SUCCESS: {
+    case GET_USER_LIST_SUCCESS: {
       return {
         ...state,
         userList: [...action.payload]
       }
     }
     case USER_FILTER: {
-      const {full_name, country, date_birth} = action.payload;
+      console.log(state);
       return {
         ...state,
-        //searchTerm: state.userList.filter( (user) => filterUser(user) )
-        searchTerm: state.userList.filter( (user) => {
-          return ( 
-            user.full_name.toLowerCase().includes(full_name.toLowerCase())  || 
-            user.country.toLowerCase().includes(country.toLowerCase()) || 
-            user.date_birth.toLowerCase().includes(date_birth.toLowerCase())  
-          );
-        })
+        searchTerm: [...action.payload]
       }
     }
     default: {

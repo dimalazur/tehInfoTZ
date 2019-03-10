@@ -13,8 +13,9 @@ import Input from '@material-ui/core/Input';
 
 import User from '../components/User';
 import Pagination from '../components/Pagination';
+import ReactPaginate from 'react-paginate';
 
-import { getHouseMapRequest,userFilter } from '../actions/actions';
+import { getUserListRequest,userFilter } from '../actions/actions';
 
 
 class FilterUser extends Component {
@@ -22,49 +23,78 @@ class FilterUser extends Component {
   constructor(props){
     super(props);
     this.state = {
-      full_name:'',
+      fullName:'',
       country:'',
-      date_birth:'',
+      dateOfBirth:'',
       pageOfItems: [],
-      filterData: null
+      filterData: null,
+      dataPagination: null,
+      pageCount: 5,
+      perPage: 10
     }
     this.changeHeandler = this.changeHeandler.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    //this.handlePageClick = this.handlePageClick.bind(this);
   }
   onChangePage(pageOfItems) {
     // update state with new page of items
-    this.setState({ pageOfItems: pageOfItems });
+    this.setState({ pageOfItems });
   }
 
   componentDidMount(){
-    const {onGetHouseMapRequest} = this.props;
-    onGetHouseMapRequest();
-  }
-  componentWillUpdate(prevProps, prevState){
-    const {full_name, country, date_birth, filterData} = this.state;
-    const {userList} = this.props;
-   // const data = (filterData.length > 0 ) ? filterData : userList;
+    const {onGetUserListRequest} = this.props;
+    onGetUserListRequest();
    
-    if(prevState.full_name !== full_name || prevState.country !== country || prevState.date_birth !== date_birth){
-      console.log('filter');
-      const filterData = userList.filter( user => ( ((full_name === '') || user.full_name.toLowerCase().includes(full_name.toLowerCase())) ) )
-      this.setState({filterData});
-    }
+  }
+
+  // componentWillUpdate(prevProps, prevState) {
+  //   const {fullName, country, dateOfBirth, filterData} = this.state;
+  //   const {userList} = this.props;
+  //  // const data = (filterData.length > 0 ) ? filterData : userList;
+   
+  //   if(prevState.fullName !== fullName || prevState.country !== country || prevState.dateOfBirth !== dateOfBirth){
+  //     console.log('filter');
+  //     const filterData = userList.filter(user => {
+  //       console.log('user', user)
+  //       console.log('fullName', fullName)
+  //       console.log('fullName === ', fullName === '');
+
+  //       return ((fullName === '') || user.fullName.toLowerCase().includes(fullName.toLowerCase()))
+  //     })
+  //     this.setState({filterData});
+  //   }
 
 
-    /*if(prevState.full_name !== full_name){
-      const filterData = data.filter( user => ( user.full_name.toLowerCase().includes(full_name.toLowerCase()) ) )
-      this.setState({filterData});
-    }
-    if(prevState.country !== country){
-      const filterData = data.filter( user => ( user.country.toLowerCase().includes(country.toLowerCase()) ) )
-      this.setState({filterData});
-    }
-    if(prevState.date_birth !== date_birth){
-      const filterData = data.filter( user => ( user.date_birth.toLowerCase().includes(date_birth.toLowerCase()) ) )
-      this.setState({filterData});
-    }*/
+  //   /*if(prevState.fullName !== fullName){
+  //     const filterData = data.filter( user => ( user.fullName.toLowerCase().includes(fullName.toLowerCase()) ) )
+  //     this.setState({filterData});
+  //   }
+  //   if(prevState.country !== country){
+  //     const filterData = data.filter( user => ( user.country.toLowerCase().includes(country.toLowerCase()) ) )
+  //     this.setState({filterData});
+  //   }
+  //   if(prevState.dateOfBirth !== dateOfBirth){
+  //     const filterData = data.filter( user => ( user.dateOfBirth.toLowerCase().includes(dateOfBirth.toLowerCase()) ) )
+  //     this.setState({filterData});
+  //   }*/
 
+  // }
+
+  getData() {
+    const { fullName, country, dateOfBirth, filterData } = this.state;
+    const { userList } = this.props;
+
+    if (fullName || country || dateOfBirth) {
+      return userList.filter(user => {
+        return ((fullName === '') || user.fullName.toLowerCase().includes(fullName.toLowerCase()))
+          && ((country === '') || user.country.toLowerCase().includes(country.toLowerCase()))
+          && ((dateOfBirth === '') || user.dateOfBirth.toLowerCase().includes(dateOfBirth.toLowerCase()))
+      })
+    }
+
+    return userList;
+    /* const userListData = this.getData();
+    onUserFilter(userListData);*/
   }
 
   changeHeandler({ target: {name,value} }) {
@@ -85,13 +115,32 @@ class FilterUser extends Component {
    
 
   };
+/*  handlePageClick(){
+    const { filterData } = this.state;
+ 
+  }*/
+  handlePageClick = data => {
+    console.log(data);
+    let selected = data.selected;
+    let offset = Math.ceil(selected * this.state.perPage);
+    console.log(this.filterData);
+    console.log(offset);
+   // let newData = this.filterData.slice(offset, this.state.pageCount);
+    this.setState({ offset: offset }, () => {
+      this.setState({
+        //dataPagination: newData,
+      })
+    });
+  };
   
    
   render() {
-    const {userList, onChangeCardTemplate,searchTerm} = this.props;
-    const { filterData } = this.state;
-   // let userListrender = (searchTerm === null) ? userList : searchTerm;
-    let userListrender = (filterData !== null ) ? filterData : userList;
+    const { pageOfItems, dataPagination } = this.state;
+
+    const userListrender = this.getData();
+    
+
+    console.log('userListrender', userListrender)
     
     /*const DisplayTemplate = houseMapList.map(house => (
                 
@@ -102,12 +151,12 @@ class FilterUser extends Component {
       <div className="filter-user-holder">
         <div className="wrap">
           <div className="filter-panel">
-            {/*<Input placeholder="Search name" name="full_name" type="string" className="filter-field" 
+            {/*<Input placeholder="Search name" name="fullName" type="string" className="filter-field" 
             onChange={ function() {return this.changeHeandler.bind(this)} }/>*/}
             <input
                 className="filter-field"
                 type="text"
-                name="full_name"
+                name="fullName"
                 placeholder="Search name"
                 onChange={this.changeHeandler}
               />
@@ -121,7 +170,7 @@ class FilterUser extends Component {
             <input
                 className="filter-field"
                 type="text"
-                name="date_birth"
+                name="dateOfBirth"
                 placeholder="Search date of birth"
                 onChange={this.changeHeandler}
               />
@@ -136,14 +185,27 @@ class FilterUser extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.pageOfItems.map(user => (
+                {userListrender.map(user => (
                   <User user={user} key={user.id} />
                 ))}
               </TableBody>
             </Table>
           </Paper>
 
-          <Pagination items={userListrender} onChangePage={this.onChangePage} />
+          <ReactPaginate
+            previousLabel={'previous'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+          {/* <Pagination items={userListrender} onChangePage={this.onChangePage} /> */}
 
         </div>
       </div>
@@ -160,8 +222,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetHouseMapRequest: (payload) => {
-      dispatch(getHouseMapRequest(payload))
+    onGetUserListRequest: (payload) => {
+      dispatch(getUserListRequest(payload))
     },
     onUserFilter: (payload) => {
       dispatch(userFilter(payload))
