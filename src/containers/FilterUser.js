@@ -12,10 +12,9 @@ import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 
 import User from '../components/User';
-import Pagination from '../components/Pagination';
 import ReactPaginate from 'react-paginate';
 
-import { getUserListRequest,userFilter } from '../actions/actions';
+import { getUserListRequest, userFilter, changeUserPage } from '../actions/actions';
 
 
 class FilterUser extends Component {
@@ -30,7 +29,7 @@ class FilterUser extends Component {
       filterData: null,
       dataPagination: null,
       pageCount: 5,
-      perPage: 10
+      perPage: 5
     }
     this.changeHeandler = this.changeHeandler.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
@@ -44,54 +43,34 @@ class FilterUser extends Component {
   componentDidMount(){
     const {onGetUserListRequest} = this.props;
     onGetUserListRequest();
-   
   }
 
-  // componentWillUpdate(prevProps, prevState) {
-  //   const {fullName, country, dateOfBirth, filterData} = this.state;
-  //   const {userList} = this.props;
-  //  // const data = (filterData.length > 0 ) ? filterData : userList;
-   
-  //   if(prevState.fullName !== fullName || prevState.country !== country || prevState.dateOfBirth !== dateOfBirth){
-  //     console.log('filter');
-  //     const filterData = userList.filter(user => {
-  //       console.log('user', user)
-  //       console.log('fullName', fullName)
-  //       console.log('fullName === ', fullName === '');
+  componentWillUpdate(prevProps, prevState) {
+    const {fullName, country, dateOfBirth, filterData, dataPagination} = this.state;
+    const {userList} = this.props;
+    if(prevState.dataPagination !== dataPagination ){
+      console.log('componentWillUpdate');
+      
+    }
 
-  //       return ((fullName === '') || user.fullName.toLowerCase().includes(fullName.toLowerCase()))
-  //     })
-  //     this.setState({filterData});
-  //   }
+  }
 
-
-  //   /*if(prevState.fullName !== fullName){
-  //     const filterData = data.filter( user => ( user.fullName.toLowerCase().includes(fullName.toLowerCase()) ) )
-  //     this.setState({filterData});
-  //   }
-  //   if(prevState.country !== country){
-  //     const filterData = data.filter( user => ( user.country.toLowerCase().includes(country.toLowerCase()) ) )
-  //     this.setState({filterData});
-  //   }
-  //   if(prevState.dateOfBirth !== dateOfBirth){
-  //     const filterData = data.filter( user => ( user.dateOfBirth.toLowerCase().includes(dateOfBirth.toLowerCase()) ) )
-  //     this.setState({filterData});
-  //   }*/
-
-  // }
 
   getData() {
-    const { fullName, country, dateOfBirth, filterData } = this.state;
+    const { fullName, country, dateOfBirth, filterData, dataPagination } = this.state;
     const { userList } = this.props;
 
     if (fullName || country || dateOfBirth) {
-      return userList.filter(user => {
+      let data = userList.filter(user => {
         return ((fullName === '') || user.fullName.toLowerCase().includes(fullName.toLowerCase()))
           && ((country === '') || user.country.toLowerCase().includes(country.toLowerCase()))
           && ((dateOfBirth === '') || user.dateOfBirth.toLowerCase().includes(dateOfBirth.toLowerCase()))
       })
+      return data;
     }
+    /*if ( dataPagination !== null ) {
 
+    }*/
     return userList;
     /* const userListData = this.getData();
     onUserFilter(userListData);*/
@@ -99,53 +78,47 @@ class FilterUser extends Component {
 
   changeHeandler({ target: {name,value} }) {
     const {onUserFilter} = this.props;
-    console.log('onUserFilter');
     this.setState(      
-      {[name]: value}  
-    );
-   
-
-   /* let myObj ={
-      ...this.state
-    }
-
-    myObj[name]= value;*/
-   
-   // onUserFilter(myObj);
-   
-
+      {[name]: value},
+      () => {
+        onUserFilter(this.getData());
+      }  
+    );  
+    //console.log(this.state);
+    //onUserFilter(this.getData());
   };
-/*  handlePageClick(){
-    const { filterData } = this.state;
- 
-  }*/
+
   handlePageClick = data => {
+    const {onChangeUserPage} = this.props;
     console.log(data);
     let selected = data.selected;
     let offset = Math.ceil(selected * this.state.perPage);
-    console.log(this.filterData);
-    console.log(offset);
-   // let newData = this.filterData.slice(offset, this.state.pageCount);
+    console.log(this.getData());
+    let users = this.getData();
+
+   
+    onChangeUserPage({offset, users});
+   
+
+   //let newData = [...this.state.filterData].slice(offset, this.state.pageCount);
     this.setState({ offset: offset }, () => {
       this.setState({
-        //dataPagination: newData,
+       // dataPagination: newData,
       })
     });
+    //console.log(newData);
   };
   
    
   render() {
     const { pageOfItems, dataPagination } = this.state;
-
+    const { userRenderList, pageCount } = this.props;
     const userListrender = this.getData();
-    
 
     console.log('userListrender', userListrender)
-    
     /*const DisplayTemplate = houseMapList.map(house => (
                 
             ));   */
-          
 
   return (
       <div className="filter-user-holder">
@@ -185,7 +158,7 @@ class FilterUser extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {userListrender.map(user => (
+                {userRenderList.map(user => (
                   <User user={user} key={user.id} />
                 ))}
               </TableBody>
@@ -197,7 +170,7 @@ class FilterUser extends Component {
             nextLabel={'next'}
             breakLabel={'...'}
             breakClassName={'break-me'}
-            pageCount={this.state.pageCount}
+            pageCount={pageCount}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
             onPageChange={this.handlePageClick}
@@ -205,8 +178,6 @@ class FilterUser extends Component {
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
           />
-          {/* <Pagination items={userListrender} onChangePage={this.onChangePage} /> */}
-
         </div>
       </div>
     )
@@ -217,7 +188,9 @@ class FilterUser extends Component {
 const mapStateToProps = (state) => {
   return {
    userList: state.users.userList,
-   searchTerm: state.users.searchTerm
+   searchTerm: state.users.searchTerm,
+   userRenderList: state.users.userRenderList,
+   pageCount: state.users.pageCount
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -227,9 +200,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUserFilter: (payload) => {
       dispatch(userFilter(payload))
+    },
+    onChangeUserPage: (payload) => {
+      dispatch(changeUserPage(payload))
     }
   }
 }
+
 
 /*FilterUser.propTypes = {
   houseMapList: PropTypes.arrayOf(PropTypes.shape({
