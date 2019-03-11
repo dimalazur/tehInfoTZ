@@ -10,8 +10,6 @@ import {
 } from '../actions/actions';
 import { authApi } from '../API';
 
-
-
 function* getUserList(actions) {
   const success = payload => ({ type: GET_USER_LIST_SUCCESS, payload });
   const failure = payload => ({ type: GET_USER_LIST_FAILURE, payload });

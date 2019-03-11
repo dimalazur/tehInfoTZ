@@ -54,7 +54,7 @@ table {
 .table-holder .table {min-width: 450px;}
 
 .pagination {padding: 10px 0; padding-left: 0; margin: 20px 0; border-radius: 4px;}
-.pagination a {cursor: pointer;}
+.pagination a {cursor: pointer; font-family: Roboto, Arial, sans-serif;}
 .pagination>li>a, .pagination>li>span {
     position: relative;
     float: left;
