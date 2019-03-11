@@ -7,9 +7,9 @@ const TableHeader = function() {
   return (
     <TableHead>
       <TableRow>
-        <TableCell>Name</TableCell>
-        <TableCell align="right">Country</TableCell>
-        <TableCell align="right">Date of birth</TableCell>
+        <TableCell className="table-head-cell" >Name</TableCell>
+        <TableCell align="right" className="table-head-cell" >Country</TableCell>
+        <TableCell align="right" className="table-head-cell" >Date of birth</TableCell>
       </TableRow>
     </TableHead>
   )

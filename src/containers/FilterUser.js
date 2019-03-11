@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
@@ -9,8 +8,8 @@ import ReactPaginate from 'react-paginate';
 import User from '../components/User';
 import FilterPanel from '../components/FilterPanel';
 import TableHeader from '../components/TableHeader';
+import Typography from '@material-ui/core/Typography';
 import { getUserListRequest, userFilter, changeUserPage } from '../actions/actions';
-
 
 class FilterUser extends Component {
   constructor(props){
@@ -69,6 +68,7 @@ class FilterUser extends Component {
     return (
         <div className="filter-user-holder">
           <div className="wrap">
+            <Typography component="h2" className="filter-title">Filter user</Typography>
             <FilterPanel onChangeHeandler={this.changeHeandler} />
             <Paper className="table-holder">
               <Table className="table">
